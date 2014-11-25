@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
         concat: {
             sails: {
-                src: ['module.prefix','<%= app.src %>/*.js','module.suffix'],
+                src: ['module.prefix','<%= app.src %>/*.js','!<%= app.src %>/angular-sails-io.js','module.suffix'],
                 dest: '<%= app.dist %>/ngsails.io.js'
             }
 

@@ -30,10 +30,10 @@ function createSailsBackend($browser, $window, $injector, $q, $timeout){
 
     function connection(method, url, post, callback, headers, timeout, withCredentials, responseType){
 
-
+        $browser.$$incOutstandingRequestCount();
 
         function socketResponse(body,jwr){
-
+            $browser.$$completeOutstandingRequest(angular.noop);
             callback(jwr.statusCode,body);
             //status, response, headersString, statusText
         }
