@@ -42,7 +42,12 @@ function createSailsBackend($browser, $window, $injector, $q, $timeout){
         url = url || $browser.url();
 
 
-        $window.io.socket[method.toLowerCase()](url,fromJson(post),socketResponse);
+        $window.io.socket.request({
+            method: method.toLowerCase(),
+            url: url,
+            data: fromJson(post),
+            headers: headers
+        }, socketResponse);
 
     }
 
