@@ -381,9 +381,17 @@ function $sailsSocketProvider() {
                 config.headers = headers;
                 config.method = uppercase(config.method);
 
-                var xsrfValue = urlIsSameOrigin(config.url)
-                    ? $browser.cookies()[config.xsrfCookieName || defaults.xsrfCookieName]
-                    : undefined;
+                var xsrfValue;
+                if (urlIsSameOrigin(config.url)) {
+                    var cookieName = config.xsrfCookieName || defaults.xsrfCookieName;
+                    if ($injector.has('$cookies')) {
+                        xsrfValue = $injector.get('$cookies').get(cookieName);
+                    } else if ($browser.cookies) {
+                        xsrfValue = $browser.cookies()[cookieName];
+                    } else if ($injector.has('$$cookieReader')) {
+                        xsrfValue = $injector.get('$$cookieReader')()[cookieName];
+                    }
+                }
                 if (xsrfValue) {
                     headers[(config.xsrfHeaderName || defaults.xsrfHeaderName)] = xsrfValue;
                 }
